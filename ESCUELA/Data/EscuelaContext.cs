@@ -12,6 +12,7 @@ namespace ESCUELA.Data
 
         public DbSet<Estudiante> Estudiantes { get; set; }
         public DbSet<Docente> Docentes { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Grupo> Grupos { get; set; }
         public DbSet<Asignatura> Asignaturas { get; set; }
         public DbSet<Estudiante_Grupo> Estudiante_Grupos { get; set; }

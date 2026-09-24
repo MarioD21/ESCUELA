@@ -1,26 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ESCUELA.Models
 {
-    public class Docente
+    public class Admin
     {
         [Key]
-        public int Id_docente { get; set; }
-
-        public int Numero_Empleado { get; set; }
-
+        public int Id_admin { get; set; }
         public string Nombre { get; set; } = string.Empty;
-
         public string ApellidoPaterno { get; set; } = string.Empty;
-
         public string ApellidoMaterno { get; set; } = string.Empty;
-
         public string Correo { get; set; } = string.Empty;
-
         public string Usuario { get; set; } = string.Empty;
-
         public string Contrasena { get; set; } = string.Empty;
-
-        public bool Estatus { get; set; }
+        public Boolean Estatus { get; set; }
     }
 }

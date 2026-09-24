@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ESCUELA.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "El usuario es obligatorio")]
+        [Required(ErrorMessage = "Ingresa tu usuario")]
         [Display(Name = "Usuario")]
         public string Usuario { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La contraseña es obligatoria")]
+        [Required(ErrorMessage = "Ingresa tu contraseña")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Contrasena { get; set; } = string.Empty;

@@ -1,49 +1,479 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ESCUELA</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ESCUELA.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ESCUELA</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ESCUELA - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <title>@ViewData["Title"] - ESCUELA</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/ESCUELA.styles.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+
+        <aside class="school-sidebar"
+               id="schoolSidebar">
+
+            <!-- LOGO -->
+
+            <div class="school-logo">
+
+                <div class="school-logo-icon">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+
+                <div class="school-logo-text">
+
+                    <strong>
+                        ESCUELA
+                    </strong>
+
+                    <small>
+                        Panel académico
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- USUARIO -->
+            @{
+                var nombreUsuario =
+                User.FindFirst("NombreCompleto")?.Value ?? "Usuario";
+
+                var inicial =
+                nombreUsuario.Length > 0
+                ? nombreUsuario.Substring(0, 1).ToUpper()
+                : "U";
+
+                var rol =
+                User.IsInRole("Admin")
+                ? "Administrador"
+                : User.IsInRole("Docente")
+                ? "Docente"
+                : "Estudiante";
+            }
+
+
+            <div class="school-user">
+
+                <div class="school-avatar">
+                    @inicial
+                </div>
+
+                <div class="school-user-info">
+
+                    <strong>
+                        @nombreUsuario
+                    </strong>
+
+                    <span>
+                        @rol
+                    </span>
+
+                </div>
+
+                <i class="bi bi-three-dots-vertical user-menu-icon"></i>
+
+            </div>
+
+
+            <!-- =================================================
+                 MENU
+                 ================================================= -->
+
+            <nav class="school-menu">
+
+
+                <!-- ================= ADMIN ================= -->
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="school-section">
+                        ADMINISTRACIÓN
+                    </div>
+
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-house-door-fill"></i>
+
+                        <span>
+                            Inicio
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Estudiantes"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-mortarboard-fill"></i>
+
+                        <span>
+                            Estudiantes
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Docentes"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-person-workspace"></i>
+
+                        <span>
+                            Docentes
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Asignaturas"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-book-fill"></i>
+
+                        <span>
+                            Asignaturas
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Grupos"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-people-fill"></i>
+
+                        <span>
+                            Grupos
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Calificaciones"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-journal-check"></i>
+
+                        <span>
+                            Calificaciones
+                        </span>
+
+                    </a>
+                }
+
+
+                <!-- ================= DOCENTE ================= -->
+                @if (User.IsInRole("Docente"))
+                {
+                    <div class="school-section">
+                        DOCENTE
+                    </div>
+
+
+                    <a asp-controller="Docente"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-house-door-fill"></i>
+
+                        <span>
+                            Mi panel
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Grupos"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-people-fill"></i>
+
+                        <span>
+                            Mis grupos
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Asignaturas"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-book-fill"></i>
+
+                        <span>
+                            Mis asignaturas
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Calificaciones"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-journal-check"></i>
+
+                        <span>
+                            Calificaciones
+                        </span>
+
+                    </a>
+                }
+
+
+                <!-- ================= ESTUDIANTE ================= -->
+                @if (User.IsInRole("Estudiante"))
+                {
+                    <div class="school-section">
+                        MI ESPACIO
+                    </div>
+
+
+                    <a asp-controller="EstudiantePanel"
+                       asp-action="Index"
+                       class="school-link">
+
+                        <i class="bi bi-house-door-fill"></i>
+
+                        <span>
+                            Mi panel
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="EstudiantePanel"
+                       asp-action="Materias"
+                       class="school-link">
+
+                        <i class="bi bi-book-fill"></i>
+
+                        <span>
+                            Mis materias
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="EstudiantePanel"
+                       asp-action="Calificaciones"
+                       class="school-link">
+
+                        <i class="bi bi-journal-check"></i>
+
+                        <span>
+                            Mis calificaciones
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="EstudiantePanel"
+                       asp-action="Perfil"
+                       class="school-link">
+
+                        <i class="bi bi-person-circle"></i>
+
+                        <span>
+                            Mi perfil
+                        </span>
+
+                    </a>
+                }
+
+            </nav>
+
+
+            <!-- =================================================
+                 CERRAR SESIÓN
+                 ================================================= -->
+
+            <div class="school-sidebar-bottom">
+
+                <form asp-controller="Account"
+                      asp-action="Logout"
+                      method="post">
+
+                    <button type="submit"
+                            class="school-logout">
+
+                        <i class="bi bi-box-arrow-left"></i>
+
+                        <span>
+                            Cerrar sesión
+                        </span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+             CONTENIDO DEL SISTEMA
+             ===================================================== -->
+
+        <div class="school-content"
+             id="schoolContent">
+
+
+            <!-- TOPBAR -->
+
+            <header class="school-topbar">
+
+                <button id="sidebarToggle"
+                        class="school-toggle">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+
+                <div class="school-page-title">
+
+                    <span>
+                        ESCUELA
+                    </span>
+
+                    <strong>
+                        @ViewData["Title"]
+                    </strong>
+
+                </div>
+
+
+                <div class="school-top-user">
+
+                    <i class="bi bi-person-circle"></i>
+
+                    <span>
+                        @nombreUsuario
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENIDO -->
+
+            <main class="school-main">
+
+                @RenderBody()
+
+            </main>
+
+
+            <!-- FOOTER -->
+
+            <footer class="school-footer">
+
+                <span>
+                    © 2026 ESCUELA
+                </span>
+
+                <span>
+                    Sistema de administración escolar
+                </span>
+
+            </footer>
+
         </div>
-    </footer>
+
+    }
+    else
+    {
+        <!-- =====================================================
+             USUARIO NO AUTENTICADO
+             LOGIN
+             ===================================================== -->
+        @RenderBody()
+    }
+
+
+    <!-- =====================================================
+         SCRIPTS
+         ===================================================== -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <script>
+
+            const sidebar =
+                document.getElementById("schoolSidebar");
+
+            const toggle =
+                document.getElementById("sidebarToggle");
+
+            const content =
+                document.getElementById("schoolContent");
+
+
+            if (toggle && sidebar && content) {
+
+                toggle.addEventListener("click", function () {
+
+                    sidebar.classList.toggle(
+                        "school-sidebar-collapsed"
+                    );
+
+                    content.classList.toggle(
+                        "school-content-expanded"
+                    );
+
+                });
+
+            }
+
+        </script>
+    }
+
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>

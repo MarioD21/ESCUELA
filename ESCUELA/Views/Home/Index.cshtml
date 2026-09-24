@@ -1,8 +1,695 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Panel principal";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    :root {
+        --primary: #4f46e5;
+        --primary-dark: #3730a3;
+        --secondary: #7c3aed;
+        --background: #f5f7fb;
+        --card: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #0ea5e9;
+    }
+
+    body {
+        background: var(--background);
+    }
+
+    .dashboard {
+        padding: 30px 10px 50px;
+    }
+
+    /* HERO */
+    .dashboard-hero {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 22px;
+        padding: 35px;
+        color: white;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(79, 70, 229, .20);
+    }
+
+        .dashboard-hero::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            background: rgba(255,255,255,.08);
+            border-radius: 50%;
+            right: -80px;
+            top: -100px;
+        }
+
+        .dashboard-hero::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: rgba(255,255,255,.06);
+            border-radius: 50%;
+            right: 130px;
+            bottom: -110px;
+        }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255,255,255,.15);
+        padding: 7px 13px;
+        border-radius: 50px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .hero-title {
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .hero-description {
+        margin: 0;
+        opacity: .88;
+        font-size: 16px;
+    }
+
+    /* STATISTICS */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+
+    .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        padding: 22px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: .2s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,.06);
+        }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .icon-students {
+        background: #eef2ff;
+        color: #4f46e5;
+    }
+
+    .icon-teachers {
+        background: #ecfeff;
+        color: #0891b2;
+    }
+
+    .icon-groups {
+        background: #f3e8ff;
+        color: #9333ea;
+    }
+
+    .icon-subjects {
+        background: #ecfdf5;
+        color: #059669;
+    }
+
+    .stat-label {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 3px;
+    }
+
+    .stat-number {
+        font-size: 25px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* SECTION */
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 15px;
+    }
+
+    /* MODULES */
+    .modules-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .module-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 23px;
+        text-decoration: none;
+        color: inherit;
+        transition: all .2s ease;
+        display: block;
+    }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,.07);
+            text-decoration: none;
+            color: inherit;
+        }
+
+    .module-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 17px;
+    }
+
+    .module-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .module-arrow {
+        color: #9ca3af;
+        font-size: 18px;
+    }
+
+    .module-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: var(--text);
+    }
+
+    .module-description {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .blue {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .purple {
+        background: #f5f3ff;
+        color: #7c3aed;
+    }
+
+    .green {
+        background: #ecfdf5;
+        color: #059669;
+    }
+
+    .orange {
+        background: #fff7ed;
+        color: #ea580c;
+    }
+
+    .red {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .cyan {
+        background: #ecfeff;
+        color: #0891b2;
+    }
+
+    /* BOTTOM */
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 20px;
+        margin-top: 28px;
+    }
+
+    .info-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 25px;
+    }
+
+    .info-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+        .info-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .quick-action {
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 14px;
+        text-decoration: none;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: .2s;
+    }
+
+        .quick-action:hover {
+            background: #f9fafb;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .quick-action i {
+            font-size: 17px;
+        }
+
+    .welcome-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+        .welcome-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+    .check {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #ecfdf5;
+        color: #059669;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+
+    /* RESPONSIVE */
+    @@media (max-width: 1000px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .modules-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .bottom-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .dashboard {
+            padding: 20px 5px;
+        }
+
+        .dashboard-hero {
+            padding: 25px;
+        }
+
+        .hero-title {
+            font-size: 27px;
+        }
+
+        .stats-grid,
+        .modules-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .quick-actions {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="dashboard">
+
+    
+    <!-- HERO -->
+    <div class="dashboard-hero">
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                <i class="bi bi-mortarboard-fill"></i>
+                Sistema académico
+            </div>
+
+            <h1 class="hero-title">
+                Bienvenido al panel académico
+            </h1>
+
+            <p class="hero-description">
+                Administra estudiantes, docentes, grupos, asignaturas y calificaciones
+                desde un solo lugar.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- ESTADÍSTICAS -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon icon-students">
+                <i class="bi bi-people-fill"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">Estudiantes</div>
+                <div class="stat-number">@ViewBag.TotalEstudiantes</div>
+            </div>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon icon-teachers">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">Docentes</div>
+                <div class="stat-number">@ViewBag.TotalDocentes</div>
+            </div>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon icon-groups">
+                <i class="bi bi-diagram-3-fill"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">Grupos</div>
+                <div class="stat-number">@ViewBag.TotalGrupos</div>
+            </div>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon icon-subjects">
+                <i class="bi bi-book-fill"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">Asignaturas</div>
+                <div class="stat-number">@ViewBag.TotalAsignaturas</div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- MÓDULOS -->
+    <h2 class="section-title">
+        Módulos del sistema
+    </h2>
+
+    <div class="modules-grid">
+
+        <a asp-controller="Estudiantes"
+           asp-action="Index"
+           class="module-card">
+
+            <div class="module-top">
+                <div class="module-icon blue">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+                <i class="bi bi-arrow-up-right module-arrow"></i>
+            </div>
+
+            <div class="module-title">
+                Estudiantes
+            </div>
+
+            <p class="module-description">
+                Registra, consulta y administra la información de los estudiantes.
+            </p>
+
+        </a>
+
+
+        <a asp-controller="Docentes"
+           asp-action="Index"
+           class="module-card">
+
+            <div class="module-top">
+                <div class="module-icon cyan">
+                    <i class="bi bi-person-workspace"></i>
+                </div>
+
+                <i class="bi bi-arrow-up-right module-arrow"></i>
+            </div>
+
+            <div class="module-title">
+                Docentes
+            </div>
+
+            <p class="module-description">
+                Gestiona docentes y consulta las asignaturas y grupos asignados.
+            </p>
+
+        </a>
+
+
+        <a asp-controller="Grupos"
+           asp-action="Index"
+           class="module-card">
+
+            <div class="module-top">
+                <div class="module-icon purple">
+                    <i class="bi bi-diagram-3-fill"></i>
+                </div>
+
+                <i class="bi bi-arrow-up-right module-arrow"></i>
+            </div>
+
+            <div class="module-title">
+                Grupos
+            </div>
+
+            <p class="module-description">
+                Administra los grupos académicos y sus estudiantes.
+            </p>
+
+        </a>
+
+
+        <a asp-controller="Asignaturas"
+           asp-action="Index"
+           class="module-card">
+
+            <div class="module-top">
+                <div class="module-icon green">
+                    <i class="bi bi-book-fill"></i>
+                </div>
+
+                <i class="bi bi-arrow-up-right module-arrow"></i>
+            </div>
+
+            <div class="module-title">
+                Asignaturas
+            </div>
+
+            <p class="module-description">
+                Administra las materias disponibles dentro del sistema académico.
+            </p>
+
+        </a>
+
+
+        <a asp-controller="Calificaciones"
+           asp-action="Index"
+           class="module-card">
+
+            <div class="module-top">
+                <div class="module-icon orange">
+                    <i class="bi bi-clipboard2-data-fill"></i>
+                </div>
+
+                <i class="bi bi-arrow-up-right module-arrow"></i>
+            </div>
+
+            <div class="module-title">
+                Calificaciones
+            </div>
+
+            <p class="module-description">
+                Captura, consulta y administra las calificaciones de los estudiantes.
+            </p>
+
+        </a>
+
+
+        <a asp-controller="Reportes"
+           asp-action="Index"
+           class="module-card">
+
+            <div class="module-top">
+                <div class="module-icon red">
+                    <i class="bi bi-bar-chart-fill"></i>
+                </div>
+
+                <i class="bi bi-arrow-up-right module-arrow"></i>
+            </div>
+
+            <div class="module-title">
+                Reportes
+            </div>
+
+            <p class="module-description">
+                Consulta información académica y genera reportes del sistema.
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <!-- PARTE INFERIOR -->
+    <div class="bottom-grid">
+
+        <div class="info-card">
+
+            <div class="info-header">
+                <h3>
+                    Acciones rápidas
+                </h3>
+            </div>
+
+            <div class="quick-actions">
+
+                <a asp-controller="Estudiantes"
+                   asp-action="Create"
+                   class="quick-action">
+                    <i class="bi bi-person-plus-fill"></i>
+                    Nuevo estudiante
+                </a>
+
+                <a asp-controller="Docentes"
+                   asp-action="Create"
+                   class="quick-action">
+                    <i class="bi bi-person-plus"></i>
+                    Nuevo docente
+                </a>
+
+                <a asp-controller="Grupos"
+                   asp-action="Create"
+                   class="quick-action">
+                    <i class="bi bi-plus-circle-fill"></i>
+                    Nuevo grupo
+                </a>
+
+                <a asp-controller="Calificaciones"
+                   asp-action="Create"
+                   class="quick-action">
+                    <i class="bi bi-pencil-square"></i>
+                    Capturar calificación
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-header">
+                <h3>
+                    Sistema académico
+                </h3>
+            </div>
+
+            <ul class="welcome-list">
+
+                <li>
+                    <span class="check">
+                        <i class="bi bi-check-lg"></i>
+                    </span>
+                    Control de estudiantes
+                </li>
+
+                <li>
+                    <span class="check">
+                        <i class="bi bi-check-lg"></i>
+                    </span>
+                    Administración de docentes
+                </li>
+
+                <li>
+                    <span class="check">
+                        <i class="bi bi-check-lg"></i>
+                    </span>
+                    Gestión de grupos y asignaturas
+                </li>
+
+                <li>
+                    <span class="check">
+                        <i class="bi bi-check-lg"></i>
+                    </span>
+                    Control de calificaciones
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+    
+
 </div>

@@ -1,0 +1,255 @@
+@model ESCUELA.Models.Docente
+
+@{
+    ViewData["Title"] = "Panel del docente";
+}
+
+<div class="student-dashboard">
+
+    ```
+    <!-- BIENVENIDA -->
+    <div class="student-hero">
+
+        <div class="hero-content">
+
+            <div class="student-avatar">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+
+            <div class="welcome-label">
+                Bienvenido de nuevo
+            </div>
+
+            <h1 class="student-name">
+                @Model.Nombre @Model.ApellidoPaterno
+            </h1>
+
+            <p class="student-subtitle">
+                Administra tus grupos, asignaturas y actividades académicas.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ESTADÍSTICAS -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon groups-icon">
+                <i class="bi bi-diagram-3-fill"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">
+                    Grupos asignados
+                </div>
+
+                <div class="stat-number">
+                    @ViewBag.TotalGrupos
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon grades-icon">
+                <i class="bi bi-book-fill"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">
+                    Asignaturas asignadas
+                </div>
+
+                <div class="stat-number">
+                    @ViewBag.TotalAsignaturas
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENIDO -->
+    <div class="content-grid">
+
+        <!-- INFORMACIÓN DEL DOCENTE -->
+        <div class="dashboard-card">
+
+            <div class="card-header-custom">
+
+                <div class="card-header-icon">
+                    <i class="bi bi-person-vcard-fill"></i>
+                </div>
+
+                <div>
+                    <h3>Datos de tu cuenta</h3>
+                    <p>Información registrada en el sistema</p>
+                </div>
+
+            </div>
+
+
+            <div class="account-data">
+
+                <div class="data-row">
+
+                    <span class="data-label">
+                        Número de empleado
+                    </span>
+
+                    <span class="student-id">
+                        @Model.Numero_Empleado
+                    </span>
+
+                </div>
+
+
+                <div class="data-row">
+
+                    <span class="data-label">
+                        Nombre completo
+                    </span>
+
+                    <span class="data-value">
+                        @Model.Nombre @Model.ApellidoPaterno
+                    </span>
+
+                </div>
+
+
+                <div class="data-row">
+
+                    <span class="data-label">
+                        Correo electrónico
+                    </span>
+
+                    <span class="data-value">
+                        @Model.Correo
+                    </span>
+
+                </div>
+
+
+                <div class="data-row">
+
+                    <span class="data-label">
+                        Usuario
+                    </span>
+
+                    <span class="data-value">
+                        @Model.Usuario
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="status-box">
+
+                <div class="status-icon">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+
+                <div class="status-text">
+                    <strong>Cuenta activa</strong>
+                    <span>Tu acceso al sistema se encuentra habilitado.</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCESO RÁPIDO -->
+        <div class="dashboard-card">
+
+            <div class="card-header-custom">
+
+                <div class="card-header-icon">
+                    <i class="bi bi-grid-fill"></i>
+                </div>
+
+                <div>
+                    <h3>Acceso rápido</h3>
+                    <p>Administra tus actividades académicas</p>
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+                <a asp-controller="Grupos"
+                   asp-action="Index"
+                   class="quick-action">
+
+                    <div class="quick-action-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <span class="quick-action-text">
+                        Mis grupos
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="Asignaturas"
+                   asp-action="Index"
+                   class="quick-action">
+
+                    <div class="quick-action-icon">
+                        <i class="bi bi-book-fill"></i>
+                    </div>
+
+                    <span class="quick-action-text">
+                        Mis asignaturas
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="Calificaciones"
+                   asp-action="Index"
+                   class="quick-action">
+
+                    <div class="quick-action-icon">
+                        <i class="bi bi-clipboard2-check-fill"></i>
+                    </div>
+
+                    <span class="quick-action-text">
+                        Calificaciones
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="Docentes"
+                   asp-action="Details"
+                   class="quick-action">
+
+                    <div class="quick-action-icon">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+
+                    <span class="quick-action-text">
+                        Mi perfil
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+ 
+</div>

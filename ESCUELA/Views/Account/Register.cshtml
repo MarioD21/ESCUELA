@@ -1,0 +1,113 @@
+﻿@model ESCUELA.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registrarse";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">Registrarse</h2>
+
+        <form asp-controller="Account" asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Rol" class="form-label"></label>
+                <select asp-for="Rol" id="Rol" class="form-select">
+                    <option value="">-- Selecciona --</option>
+                    <option value="Docente">Docente</option>
+                    <option value="Estudiante">Estudiante</option>
+                </select>
+                <span asp-validation-for="Rol" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3" id="grupoDocente">
+                <label asp-for="Numero_Empleado" class="form-label"></label>
+                <input asp-for="Numero_Empleado" class="form-control" />
+                <span asp-validation-for="Numero_Empleado" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3" id="grupoEstudiante">
+                <label asp-for="Matricula" class="form-label"></label>
+                <input asp-for="Matricula" class="form-control" />
+                <span asp-validation-for="Matricula" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ApellidoPaterno" class="form-label"></label>
+                    <input asp-for="ApellidoPaterno" class="form-control" />
+                    <span asp-validation-for="ApellidoPaterno" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ApellidoMaterno" class="form-label"></label>
+                    <input asp-for="ApellidoMaterno" class="form-control" />
+                    <span asp-validation-for="ApellidoMaterno" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Correo" class="form-label"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Usuario" class="form-label"></label>
+                <input asp-for="Usuario" class="form-control" />
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Contrasena" class="form-label"></label>
+                    <input asp-for="Contrasena" class="form-control" />
+                    <span asp-validation-for="Contrasena" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ConfirmarContrasena" class="form-label"></label>
+                    <input asp-for="ConfirmarContrasena" class="form-control" />
+                    <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+
+            <div class="text-center mt-3">
+                <a asp-controller="Account" asp-action="Login">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        (function () {
+            var rolSelect = document.getElementById('Rol');
+            var grupoDocente = document.getElementById('grupoDocente');
+            var grupoEstudiante = document.getElementById('grupoEstudiante');
+
+            function actualizarCampos() {
+                if (rolSelect.value === 'Docente') {
+                    grupoDocente.style.display = '';
+                    grupoEstudiante.style.display = 'none';
+                } else if (rolSelect.value === 'Estudiante') {
+                    grupoDocente.style.display = 'none';
+                    grupoEstudiante.style.display = '';
+                } else {
+                    grupoDocente.style.display = 'none';
+                    grupoEstudiante.style.display = 'none';
+                }
+            }
+
+            rolSelect.addEventListener('change', actualizarCampos);
+            actualizarCampos();
+        })();
+    </script>
+}

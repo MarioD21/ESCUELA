@@ -1,0 +1,467 @@
+@model IEnumerable<ESCUELA.Models.Estudiante>
+
+@{
+    ViewData["Title"] = "Estudiantes";
+
+
+var estudiantes = Model?.ToList() ?? new List<ESCUELA.Models.Estudiante>();
+    var totalEstudiantes = estudiantes.Count;
+    var estudiantesActivos = estudiantes.Count(e => e.estatus);
+    var estudiantesInactivos = estudiantes.Count(e => !e.estatus);
+
+
+}
+
+<div class="container-fluid py-4">
+
+   
+    <!-- ENCABEZADO -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="fs-3">🎓</span>
+                <h2 class="fw-bold mb-0">Estudiantes</h2>
+            </div>
+
+            <p class="text-secondary mb-0">
+                Administra y consulta los estudiantes registrados.
+            </p>
+        </div>
+
+        <a asp-controller="Estudiantes"
+           asp-action="Create"
+           class="btn btn-primary px-4 py-2 shadow-sm">
+            <i class="bi bi-person-plus-fill me-2"></i>
+            Nuevo estudiante
+        </a>
+
+    </div>
+
+
+    <!-- ESTADÍSTICAS -->
+    <div class="row g-3 mb-4">
+
+        <!-- TOTAL -->
+        <div class="col-12 col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="rounded-3 bg-primary bg-opacity-10
+                            d-flex align-items-center justify-content-center me-3"
+                         style="width:52px;height:52px;">
+
+                        <span class="bi bi-people-fill text-primary fs-4"></span>
+
+                    </div>
+
+                    <div>
+                        <div class="text-secondary small">
+                            Total de estudiantes
+                        </div>
+
+                        <div class="fs-3 fw-bold">
+                            @totalEstudiantes
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVOS -->
+        <div class="col-12 col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="rounded-3 bg-success bg-opacity-10
+                            d-flex align-items-center justify-content-center me-3"
+                         style="width:52px;height:52px;">
+
+                        <span class="bi bi-person-check-fill text-success fs-4"></span>
+
+                    </div>
+
+                    <div>
+                        <div class="text-secondary small">
+                            Estudiantes activos
+                        </div>
+
+                        <div class="fs-3 fw-bold">
+                            @estudiantesActivos
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INACTIVOS -->
+        <div class="col-12 col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="rounded-3 bg-secondary bg-opacity-10
+                            d-flex align-items-center justify-content-center me-3"
+                         style="width:52px;height:52px;">
+
+                        <span class="bi bi-person-x-fill text-secondary fs-4"></span>
+
+                    </div>
+
+                    <div>
+                        <div class="text-secondary small">
+                            Estudiantes inactivos
+                        </div>
+
+                        <div class="fs-3 fw-bold">
+                            @estudiantesInactivos
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="card border-0 shadow-sm">
+
+        <!-- CABECERA DE TABLA -->
+        <div class="card-header bg-white border-0 pt-4 px-4">
+
+            <div class="d-flex flex-column flex-md-row
+                    justify-content-between align-items-md-center gap-3">
+
+                <div>
+                    <h5 class="fw-bold mb-1">
+                        Lista de estudiantes
+                    </h5>
+
+                    <small class="text-secondary">
+                        @totalEstudiantes estudiante(s) registrado(s)
+                    </small>
+                </div>
+
+
+                <!-- BUSCADOR -->
+                <div style="max-width: 350px; width:100%;">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bi bi-search text-secondary"></i>
+                        </span>
+
+                        <input type="text"
+                               id="buscarEstudiante"
+                               class="form-control bg-light border-start-0"
+                               placeholder="Buscar estudiante..."
+                               autocomplete="off" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLA -->
+        <div class="card-body px-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0"
+                       id="tablaEstudiantes">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th class="ps-4">
+                                Estudiante
+                            </th>
+
+                            <th>
+                                Matrícula
+                            </th>
+
+                            <th>
+                                Correo
+                            </th>
+
+                            <th>
+                                Estatus
+                            </th>
+
+                            <th class="text-center pe-4">
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (estudiantes.Any())
+                        {
+                            foreach (var estudiante in estudiantes)
+                            {
+                                var nombreCompleto =
+                                $"{estudiante.Nombre} {estudiante.ApellidoPaterno} {estudiante.ApellidoMaterno}";
+
+                                var inicial =
+                                string.IsNullOrWhiteSpace(estudiante.Nombre)
+                                ? "?"
+                                : estudiante.Nombre.Substring(0, 1).ToUpper();
+
+                                <tr>
+
+                                    <!-- ESTUDIANTE -->
+                                    <td class="ps-4">
+
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="rounded-circle bg-primary text-white
+                                                            d-flex align-items-center justify-content-center
+                                                            fw-bold me-3"
+                                                 style="width:42px;height:42px;">
+
+                                                @inicial
+
+                                            </div>
+
+                                            <div>
+
+                                                <div class="fw-semibold">
+                                                    @nombreCompleto
+                                                </div>
+
+                                                <small class="text-secondary">
+                                                    ID: @estudiante.Id_estudiante
+                                                </small>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- MATRICULA -->
+                                    <td>
+
+                                        <span class="badge bg-light text-dark border px-3 py-2">
+                                            @estudiante.Matricula
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- CORREO -->
+                                    <td>
+
+                                        @if (!string.IsNullOrWhiteSpace(estudiante.Correo))
+                                        {
+                                            <span>
+                                                <i class="bi bi-envelope me-1 text-secondary"></i>
+                                                @estudiante.Correo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-secondary">
+                                                Sin correo
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- ESTATUS -->
+                                    <td>
+
+                                        @if (estudiante.estatus)
+                                        {
+                                            <span class="badge rounded-pill bg-success bg-opacity-10
+                                                                 text-success px-3 py-2">
+
+                                                <i class="bi bi-circle-fill me-1"
+                                                   style="font-size:7px;"></i>
+
+                                                Activo
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill bg-secondary bg-opacity-10
+                                                                 text-secondary px-3 py-2">
+
+                                                <i class="bi bi-circle-fill me-1"
+                                                   style="font-size:7px;"></i>
+
+                                                Inactivo
+
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- ACCIONES -->
+                                    <td class="text-center pe-4">
+
+                                        <div class="btn-group" role="group">
+
+                                            <!-- DETALLES -->
+                                            <a asp-action="Details"
+                                               asp-route-id="@estudiante.Id_estudiante"
+                                               class="btn btn-sm btn-outline-secondary"
+                                               title="Ver detalles">
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </a>
+
+
+                                            <!-- EDITAR -->
+                                            <a asp-action="Edit"
+                                               asp-route-id="@estudiante.Id_estudiante"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Editar">
+
+                                                <i class="bi bi-pencil"></i>
+
+                                            </a>
+
+
+                                            <!-- ELIMINAR -->
+                                            <a asp-action="Delete"
+                                               asp-route-id="@estudiante.Id_estudiante"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Eliminar">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <!-- SIN ESTUDIANTES -->
+                            <tr>
+
+                                <td colspan="5"
+                                    class="text-center py-5">
+
+                                    <div class="py-4">
+
+                                        <div class="fs-1 mb-3">
+                                            🎓
+                                        </div>
+
+                                        <h5 class="fw-bold">
+                                            No hay estudiantes registrados
+                                        </h5>
+
+                                        <p class="text-secondary mb-3">
+                                            Todavía no se han agregado estudiantes.
+                                        </p>
+
+                                        <a asp-action="Create"
+                                           class="btn btn-primary">
+
+                                            <i class="bi bi-person-plus-fill me-2"></i>
+                                            Agregar estudiante
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</div>
+
+<!-- BUSCADOR -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const buscador =
+            document.getElementById("buscarEstudiante");
+
+        const tabla =
+            document.getElementById("tablaEstudiantes");
+
+        if (!buscador || !tabla)
+            return;
+
+        buscador.addEventListener("input", function () {
+
+            const texto =
+                this.value
+                    .toLowerCase()
+                    .trim();
+
+            const filas =
+                tabla.querySelectorAll("tbody tr");
+
+            filas.forEach(function (fila) {
+
+                const contenido =
+                    fila.textContent.toLowerCase();
+
+                fila.style.display =
+                    contenido.includes(texto)
+                        ? ""
+                        : "none";
+
+            });
+
+        });
+
+    });
+
+</script>

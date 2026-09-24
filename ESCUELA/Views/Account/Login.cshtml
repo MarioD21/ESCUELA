@@ -1,0 +1,109 @@
+﻿
+@model ESCUELA.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+
+        <h2 class="mb-4">Iniciar sesión</h2>
+
+        <form asp-controller="Account"
+              asp-action="Login"
+              asp-route-returnUrl="@ViewData["ReturnUrl"]"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            @if (TempData["RegistroExitoso"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["RegistroExitoso"]
+                </div>
+            }
+
+            <!-- USUARIO -->
+
+            <div class="mb-3">
+
+                <label asp-for="Usuario"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Usuario"
+                       class="form-control"
+                       autofocus />
+
+                <span asp-validation-for="Usuario"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- CONTRASEÑA -->
+
+            <div class="mb-3">
+
+                <label asp-for="Contrasena"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Contrasena"
+                       type="password"
+                       class="form-control" />
+
+                <span asp-validation-for="Contrasena"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- RECORDAR / REGISTRO -->
+
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+
+                <div class="form-check">
+
+                    <input asp-for="RememberMe"
+                           class="form-check-input" />
+
+                    <label asp-for="RememberMe"
+                           class="form-check-label">
+                    </label>
+
+                </div>
+
+                <a asp-controller="Account"
+                   asp-action="Register"
+                   class="text-end">
+                    ¿Registrarse?
+                </a>
+
+            </div>
+
+
+            <!-- BOTÓN -->
+
+            <button type="submit"
+                    class="btn btn-primary w-100">
+                Entrar
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+```
